@@ -18,14 +18,16 @@ Développer une application web de gestion hôtelière permettant de :
 - **SQL (MySQL pour la partie 1)**
 
 ## 📂 Structure du projet
-```bash
+   ```bash
 projet-bd-2025/
-|
+├
 ├── streamlit_app.py # Interface principale Streamlit
 ├── hotel.db # Base de données SQLite
 ├── schema_mysql.sql # Script SQL de création de base (MySQL)
 ├── algebra_relationnelle.pdf # Requêtes en algèbre relationnelle
 ├── README.md # Ce fichier
+```
+
 
 ## 🚀 Lancer l'application Streamlit
 
