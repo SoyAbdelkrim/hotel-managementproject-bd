@@ -1,4 +1,3 @@
-# hotel-managementproject-bd
 # Projet BD 2025 – Gestion Hôtelière
 
 Projet réalisé dans le cadre du module **Bases de Données Relationnelles** – Licence IAP S4.  
@@ -72,7 +71,8 @@ Ajout de réservation (client, chambre, période)
 Les données des hôtels, clients, chambres, prestations et réservations sont fournies dans le sujet de projet :
 Projet BD 2025 - JZ.pdf
 
-## 👨‍💻 Auteur
+## 👨‍💻 Auteurs
 
-Abdelkrim ALOUAH
+ALOUAH Abdelkrim 
+MOUKOUCH Adam
 Licence IAP S4, 2025
