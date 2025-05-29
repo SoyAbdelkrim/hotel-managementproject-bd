@@ -1,7 +1,7 @@
 # hotel-managementproject-bd
 # Projet BD 2025 – Gestion Hôtelière
 
-Projet réalisé dans le cadre du module **Bases de Données Relationnelles** – Licence MIP, IAP S4.  
+Projet réalisé dans le cadre du module **Bases de Données Relationnelles** – Licence IAP S4.  
 Encadré par **Pr. J. Zahir**.
 
 ## 🎯 Objectif
@@ -41,15 +41,15 @@ projet-bd-2025/
    cd projet-bd-2025
 
 
-Installer les dépendances :
+## Installer les dépendances :
 
 pip install streamlit
 
-Lancer l’application :
+## Lancer l’application :
 
 streamlit run streamlit_app.py
 
-📝 Fonctionnalités principales
+## 📝 Fonctionnalités principales
 Affichage de la liste des clients et des réservations
 
 Recherche des chambres disponibles sur une période
@@ -58,19 +58,19 @@ Ajout de client via formulaire
 
 Ajout de réservation (client, chambre, période)
 
-📤 Démo et livrables
-🎥 Démo vidéo : [Lien YouTube ou Google Drive à insérer]
+## 📤 Démo et livrables
+## 🎥 Démo vidéo : [Lien YouTube ou Google Drive à insérer]
 
-📁 Script SQL : schema_mysql.sql
+## 📁 Script SQL : schema_mysql.sql
 
-📄 Algèbre relationnelle : algebra_relationnelle.pdf
+## 📄 Algèbre relationnelle : algebra_relationnelle.pdf
 
-🔗 Déploiement Streamlit Cloud : [Lien à insérer]
+## 🔗 Déploiement Streamlit Cloud : [Lien à insérer]
 
-📅 Données utilisées
+## 📅 Données utilisées
 Les données des hôtels, clients, chambres, prestations et réservations sont fournies dans le sujet de projet :
 Projet BD 2025 - JZ.pdf
 
-👨‍💻 Auteur
+## 👨‍💻 Auteur
 Abdelkrim ALOUAH
-Licence MIP - IAP S4, 2025
+Licence IAP S4, 2025
