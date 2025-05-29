@@ -32,7 +32,6 @@ projet-bd-2025/
 
 ├── README.md # Ce fichier
 
-
 ## 🚀 Lancer l'application Streamlit
 
 1. Cloner le dépôt :
@@ -40,16 +39,16 @@ projet-bd-2025/
    git clone https://github.com/SoyAbdelkrim/projet-bd-2025.git
    cd projet-bd-2025
 
+2. Installer les dépendances :
+   ```bash
+   pip install streamlit
 
-## Installer les dépendances :
-
-pip install streamlit
-
-## Lancer l’application :
-
-streamlit run streamlit_app.py
+3. Lancer l’application :
+    ```bash
+    streamlit run streamlit_app.py
 
 ## 📝 Fonctionnalités principales
+
 Affichage de la liste des clients et des réservations
 
 Recherche des chambres disponibles sur une période
@@ -59,6 +58,7 @@ Ajout de client via formulaire
 Ajout de réservation (client, chambre, période)
 
 ## 📤 Démo et livrables
+
 ## 🎥 Démo vidéo : [Lien YouTube ou Google Drive à insérer]
 
 ## 📁 Script SQL : schema_mysql.sql
@@ -68,9 +68,11 @@ Ajout de réservation (client, chambre, période)
 ## 🔗 Déploiement Streamlit Cloud : [Lien à insérer]
 
 ## 📅 Données utilisées
+
 Les données des hôtels, clients, chambres, prestations et réservations sont fournies dans le sujet de projet :
 Projet BD 2025 - JZ.pdf
 
 ## 👨‍💻 Auteur
+
 Abdelkrim ALOUAH
 Licence IAP S4, 2025
