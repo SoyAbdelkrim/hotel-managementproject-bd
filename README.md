@@ -21,6 +21,7 @@ Développer une application web de gestion hôtelière permettant de :
 ## 📂 Structure du projet
 
 projet-bd-2025/
+
 ├── streamlit_app.py # Interface principale Streamlit
 
 ├── hotel.db # Base de données SQLite
