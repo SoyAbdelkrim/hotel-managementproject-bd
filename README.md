@@ -2,9 +2,9 @@
 
 # Description
 
-Interface web de gestion d'hôtels développée avec Streamlit et SQLite pour le projet de Bases de Données (Projet 
+Interface web de gestion d'hôtels développée avec Streamlit et SQLite pour le projet de Bases de Données
 
-réalisé dans le cadre du cours de Bases de Données Pr. J.ZAHIR - Licence IAP S4 2025).
+(Projet réalisé dans le cadre du cours de Bases de Données Pr. J.ZAHIR - Licence IAP S4 2025).
 
 # Fonctionnalités
 
@@ -37,25 +37,25 @@ pip
 
 # Installation
 
-# Cloner le repository
+1. Cloner le repository
 
 ```bash
 git clone <votre-repo-url>
 cd projet-bd-hotel
 ```
 
-# Installer les dépendances
+2. Installer les dépendances
 
 ```bash 
 pip install -r requirements.txt
 ```
 
-# Lancer l'application
+3. Lancer l'application
 ```bash
 streamlit run app.py
 ```
 
-L'application sera accessible à l'adresse : 
+# L'application sera accessible à l'adresse : 
 ``` http://localhost:8501 ```
 
 # Base de Données 
