@@ -1,102 +1,233 @@
 import streamlit as st
-from database import (
-    get_clients,
-    get_reservations,
-    get_chambres_disponibles,
-    add_client,
-    add_reservation,
-    get_types_chambres
+import pandas as pd
+from datetime import datetime, date
+from database import HotelDatabase
+
+# Configuration de la page
+st.set_page_config(
+    page_title="Gestion d'Hôtels",
+    page_icon="🏨",
+    layout="wide"
 )
-from datetime import date
 
-st.set_page_config(page_title="Système de Réservation d'Hôtel", layout="wide")
-st.title("Système de Réservation d'Hôtel")
+# Initialisation de la base de données
+@st.cache_resource
+def init_database():
+    return HotelDatabase()
 
-# Section Clients
-st.header("Clients")
-clients = get_clients()
-if clients:
-    st.dataframe(
-        [{"ID": c[0], "Nom complet": c[6], "Email": c[4], "Téléphone": c[5]} for c in clients],
-        use_container_width=True
-    )
-else:
-    st.info("Aucun client trouvé.")
+db = init_database()
 
-# Section Réservations
-st.header("Réservations")
-reservations = get_reservations()
-if reservations:
-    st.dataframe(
-        [
-            {
-                "ID": r[0], "Client": r[1], "Email": r[2],
-                "Arrivée": r[3], "Départ": r[4],
-                "Ville": r[5], "Pays": r[6]
-            } for r in reservations
-        ],
-        use_container_width=True
-    )
-else:
-    st.info("Aucune réservation trouvée.")
+# Interface principale
+st.title("🏨 Système de Gestion d'Hôtels")
+st.markdown("---")
 
-# Section Chambres disponibles
-st.header("Chambres Disponibles")
-col1, col2 = st.columns(2)
-with col1:
-    date_debut = st.date_input("Date d'arrivée", value=date.today())
-with col2:
-    date_fin = st.date_input("Date de départ", value=date.today())
+# Menu de navigation
+menu = st.sidebar.selectbox(
+    "Navigation",
+    ["🏠 Accueil", "📋 Réservations", "👥 Clients", "🏨 Chambres Disponibles", "➕ Ajouter Client", "📅 Nouvelle Réservation"]
+)
 
-if date_debut <= date_fin:
-    chambres = get_chambres_disponibles(str(date_debut), str(date_fin))
-    if chambres:
-        st.subheader("Chambres libres")
-        st.dataframe([
-            {
-                "ID": ch[0], "Numéro": ch[1], "Étage": ch[2], "Fumeurs": "Oui" if ch[3] else "Non",
-                "Ville": ch[4], "Type": ch[5], "Tarif (€)": f"{ch[6]:.2f}"
-            } for ch in chambres
-        ], use_container_width=True)
-    else:
-        st.warning("Aucune chambre disponible pour ces dates.")
-else:
-    st.error("La date d'arrivée doit être avant la date de départ.")
-
-# Formulaire pour ajouter un client
-st.header("Ajouter un client")
-with st.form("form_client"):
+if menu == "🏠 Accueil":
+    st.header("Bienvenue dans le Système de Gestion d'Hôtels")
+    
     col1, col2, col3 = st.columns(3)
+    
     with col1:
-        nom = st.text_input("Nom complet")
-        email = st.text_input("Email")
+        st.metric("📋 Réservations", len(db.get_reservations()))
+    
     with col2:
-        adresse = st.text_input("Adresse")
-        ville = st.text_input("Ville")
+        st.metric("👥 Clients", len(db.get_clients()))
+    
     with col3:
-        code_postal = st.text_input("Code Postal")
-        telephone = st.text_input("Téléphone")
+        # Compter les chambres disponibles aujourd'hui
+        today = date.today()
+        available_today = db.get_available_rooms(today, today)
+        st.metric("🏨 Chambres Libres Aujourd'hui", len(available_today))
+    
+    st.markdown("---")
+    st.markdown("""
+    ### Fonctionnalités disponibles :
+    - **📋 Réservations** : Consulter toutes les réservations
+    - **👥 Clients** : Gérer la liste des clients
+    - **🏨 Chambres Disponibles** : Vérifier la disponibilité par période
+    - **➕ Ajouter Client** : Enregistrer de nouveaux clients
+    - **📅 Nouvelle Réservation** : Créer une réservation
+    """)
 
-    if st.form_submit_button("Ajouter le client"):
-        if nom and email:
-            add_client(nom, adresse, ville, code_postal, email, telephone)
-            st.success("Client ajouté avec succès !")
+elif menu == "📋 Réservations":
+    st.header("📋 Liste des Réservations")
+    
+    try:
+        reservations = db.get_reservations()
+        
+        if not reservations.empty:
+            # Formatage des dates
+            reservations['date_debut'] = pd.to_datetime(reservations['date_debut']).dt.strftime('%d/%m/%Y')
+            reservations['date_fin'] = pd.to_datetime(reservations['date_fin']).dt.strftime('%d/%m/%Y')
+            
+            # Renommage des colonnes pour l'affichage
+            reservations_display = reservations.rename(columns={
+                'id_reservation': 'ID',
+                'date_debut': 'Date Début',
+                'date_fin': 'Date Fin',
+                'client_nom': 'Client',
+                'email': 'Email',
+                'hotel_ville': 'Ville Hôtel',
+                'hotel_pays': 'Pays',
+                'chambre_numero': 'N° Chambre',
+                'type_chambre': 'Type Chambre'
+            })
+            
+            st.dataframe(reservations_display, use_container_width=True)
+            st.success(f"Total: {len(reservations)} réservations")
         else:
-            st.error("Nom et Email sont obligatoires.")
+            st.info("Aucune réservation trouvée.")
+            
+    except Exception as e:
+        st.error(f"Erreur lors de la récupération des réservations: {str(e)}")
 
-# Formulaire pour ajouter une réservation
-st.header("Ajouter une réservation")
-with st.form("form_reservation"):
-    id_client = st.number_input("ID du client", min_value=1, step=1)
-    date_arrivee = st.date_input("Date d'arrivée (réservation)", value=date.today())
-    date_depart = st.date_input("Date de départ (réservation)", value=date.today())
-    types = get_types_chambres()
-    type_options = {f"{t[1]} - {t[2]:.2f} €": t[0] for t in types}
-    type_selection = st.selectbox("Type de chambre", list(type_options.keys()))
-
-    if st.form_submit_button("Ajouter la réservation"):
-        if date_arrivee <= date_depart:
-            add_reservation(id_client, str(date_arrivee), str(date_depart), type_options[type_selection])
-            st.success("Réservation ajoutée avec succès !")
+elif menu == "👥 Clients":
+    st.header("👥 Liste des Clients")
+    
+    try:
+        clients = db.get_clients()
+        
+        if not clients.empty:
+            # Renommage des colonnes
+            clients_display = clients.rename(columns={
+                'id_client': 'ID',
+                'nom': 'Nom',
+                'email': 'Email',
+                'telephone': 'Téléphone',
+                'adresse': 'Adresse',
+                'ville': 'Ville',
+                'code_postal': 'Code Postal'
+            })
+            
+            st.dataframe(clients_display, use_container_width=True)
+            st.success(f"Total: {len(clients)} clients")
         else:
-            st.error("La date d'arrivée doit être avant la date de départ.")
+            st.info("Aucun client trouvé.")
+            
+    except Exception as e:
+        st.error(f"Erreur lors de la récupération des clients: {str(e)}")
+
+elif menu == "🏨 Chambres Disponibles":
+    st.header("🏨 Chambres Disponibles")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        date_debut = st.date_input("Date de début", value=date.today())
+    with col2:
+        date_fin = st.date_input("Date de fin", value=date.today())
+    
+    if date_debut <= date_fin:
+        try:
+            chambres = db.get_available_rooms(date_debut, date_fin)
+            
+            if not chambres.empty:
+                # Renommage des colonnes
+                chambres_display = chambres.rename(columns={
+                    'id_chambre': 'ID',
+                    'numero': 'N° Chambre',
+                    'nb_personnes': 'Nb Personnes',
+                    'balcon': 'Balcon',
+                    'hotel_ville': 'Ville Hôtel',
+                    'type_chambre': 'Type',
+                    'prix': 'Prix (€/nuit)'
+                })
+                
+                st.dataframe(chambres_display, use_container_width=True)
+                st.success(f"Total: {len(chambres)} chambres disponibles")
+            else:
+                st.warning("Aucune chambre disponible pour cette période.")
+                
+        except Exception as e:
+            st.error(f"Erreur lors de la recherche: {str(e)}")
+    else:
+        st.error("La date de fin doit être postérieure ou égale à la date de début.")
+
+elif menu == "➕ Ajouter Client":
+    st.header("➕ Ajouter un Nouveau Client")
+    
+    with st.form("add_client_form"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            nom = st.text_input("Nom complet *", placeholder="Ex: Jean Dupont")
+            email = st.text_input("Email *", placeholder="Ex: jean.dupont@email.com")
+            telephone = st.text_input("Téléphone", placeholder="Ex: 0612345678")
+        
+        with col2:
+            adresse = st.text_input("Adresse", placeholder="Ex: 12 Rue de Paris")
+            ville = st.text_input("Ville", placeholder="Ex: Paris")
+            code_postal = st.text_input("Code Postal", placeholder="Ex: 75001")
+        
+        submitted = st.form_submit_button("Ajouter le Client", type="primary")
+        
+        if submitted:
+            if nom and email:
+                success, message = db.add_client(nom, email, telephone, adresse, ville, code_postal)
+                if success:
+                    st.success(message)
+                    st.balloons()
+                else:
+                    st.error(message)
+            else:
+                st.error("Le nom et l'email sont obligatoires.")
+
+elif menu == "📅 Nouvelle Réservation":
+    st.header("📅 Nouvelle Réservation")
+    
+    # Sélection des dates
+    col1, col2 = st.columns(2)
+    with col1:
+        date_debut = st.date_input("Date de début *", value=date.today())
+    with col2:
+        date_fin = st.date_input("Date de fin *", value=date.today())
+    
+    if date_debut <= date_fin:
+        # Récupération des clients
+        clients = db.get_clients()
+        if not clients.empty:
+            client_options = {f"{row['nom']} ({row['email']})": row['id_client'] 
+                            for _, row in clients.iterrows()}
+            
+            # Récupération des chambres disponibles
+            chambres = db.get_available_rooms(date_debut, date_fin)
+            
+            if not chambres.empty:
+                chambre_options = {f"Chambre {row['numero']} - {row['type_chambre']} - {row['hotel_ville']} ({row['prix']}€/nuit)": row['id_chambre'] 
+                                 for _, row in chambres.iterrows()}
+                
+                with st.form("add_reservation_form"):
+                    client_choice = st.selectbox("Sélectionner un client *", list(client_options.keys()))
+                    chambre_choice = st.selectbox("Sélectionner une chambre *", list(chambre_options.keys()))
+                    
+                    submitted = st.form_submit_button("Créer la Réservation", type="primary")
+                    
+                    if submitted:
+                        id_client = client_options[client_choice]
+                        id_chambre = chambre_options[chambre_choice]
+                        
+                        success, message = db.add_reservation(date_debut, date_fin, id_client, id_chambre)
+                        if success:
+                            st.success(message)
+                            st.balloons()
+                        else:
+                            st.error(message)
+            else:
+                st.warning("Aucune chambre disponible pour cette période.")
+        else:
+            st.error("Aucun client enregistré. Veuillez d'abord ajouter des clients.")
+    else:
+        st.error("La date de fin doit être postérieure ou égale à la date de début.")
+
+# Footer
+st.markdown("---")
+st.markdown(
+    "<div style='text-align: center; color: #888;'>"
+    "Projet Bases de Données - Licence MIP IAP S4 2025 - Pr. J.ZAHIR"
+    "</div>", 
+    unsafe_allow_html=True
+)
