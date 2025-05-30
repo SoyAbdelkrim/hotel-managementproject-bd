@@ -1,79 +1,86 @@
-# hotel-managementproject-bd
-# Projet BD 2025 – Gestion Hôtelière
+Projet Base de Données - Gestion d'Hôtels
+Description
+Interface web de gestion d'hôtels développée avec Streamlit et SQLite pour le projet de Bases de Données (Licence MIP - IAP S4 2025).
+Fonctionnalités
 
-Projet réalisé dans le cadre du module **Bases de Données Relationnelles** – Licence IAP S4.  
-Encadré par **Pr. J. Zahir**.
+📋 Consulter la liste des réservations
+👥 Consulter la liste des clients
+🏨 Consulter les chambres disponibles par période
+➕ Ajouter un nouveau client
+📅 Ajouter une nouvelle réservation
 
-## 🎯 Objectif
+Structure du Projet
+├── app.py              # Interface Streamlit principale
+├── database.py         # Gestion de la base de données SQLite
+├── requirements.txt    # Dépendances Python
+├── README.md          # Documentation
+└── hotel.db           # Base de données SQLite (générée automatiquement)
+Installation et Lancement
+Prérequis
 
-Développer une application web de gestion hôtelière permettant de :
-- Consulter les clients, réservations et chambres disponibles.
-- Ajouter de nouveaux clients et réservations.
-- Interroger une base de données en SQL et en algèbre relationnelle.
+Python 3.7+
+pip
 
-## 🧱 Technologies utilisées
+Installation
 
-- **Python 3**
-- **SQLite**
-- **Streamlit**
-- **SQL (MySQL pour la partie 1)**
+Cloner le repository
 
-## 📂 Structure du projet
-   ```bash
-projet-bd-2025/
-├
-├── app.py # Interface principale Streamlit
-├── hotel.db # Base de données SQLite
-├── schema_mysql.sql # Script SQL de création de base (MySQL)
-├── algebra_relationnelle.pdf # Requêtes en algèbre relationnelle
-├── README.md # Ce fichier
-```
+bashgit clone <votre-repo-url>
+cd projet-bd-hotel
 
+Installer les dépendances
 
-## 🚀 Lancer l'application Streamlit
+bashpip install -r requirements.txt
 
-1. Cloner le dépôt :
-   ```bash
-   git clone https://github.com/SoyAbdelkrim/projet-bd-2025.git
-   cd projet-bd-2025
+Lancer l'application
 
-2. Installer les dépendances :
-   ```bash
-   pip install streamlit
+bashstreamlit run app.py
+L'application sera accessible à l'adresse : http://localhost:8501
+Base de Données
+Modèle Conceptuel
+La base de données comprend les tables suivantes :
 
-3. Lancer l’application :
-    ```bash
-    streamlit run streamlit_app.py
+Hotel : Informations sur les hôtels
+Client : Données clients
+Prestation : Services proposés
+TypeChambre : Types de chambres disponibles
+Chambre : Détails des chambres
+Reservation : Réservations effectuées
+Evaluation : Évaluations des clients
 
-## 📝 Fonctionnalités principales
+Initialisation Automatique
+Au premier lancement, la base de données est automatiquement créée et peuplée avec les données fournies dans le sujet.
+Utilisation
+Consultation des Réservations
 
-Affichage de la liste des clients et des réservations
+Affiche toutes les réservations avec les détails client et hôtel
+Informations : ID, dates, client, hôtel, ville
 
-Recherche des chambres disponibles sur une période
+Gestion des Clients
 
-Ajout de client via formulaire
+Liste complète des clients enregistrés
+Possibilité d'ajouter de nouveaux clients
+Champs : nom, email, téléphone, adresse
 
-Ajout de réservation (client, chambre, période)
+Disponibilité des Chambres
 
-## 📤 Démo et livrables
+Recherche par période (date début/fin)
+Affichage des chambres libres avec détails
+Filtrage par type de chambre
 
-## 🎥 Démo vidéo : [Lien YouTube ou Google Drive à insérer]
+Nouvelles Réservations
 
-## 📁 Script SQL : schema_mysql.sql
+Sélection du client et de la chambre
+Choix des dates de séjour
+Validation automatique de la disponibilité
 
-## 📄 Algèbre relationnelle : algebra_relationnelle.pdf
+Technologies Utilisées
 
-## 🔗 Déploiement Streamlit Cloud : [Lien à insérer]
+Python 3.x : Langage principal
+Streamlit : Framework web
+SQLite : Base de données
+Pandas : Manipulation des données
 
-## 📅 Données utilisées
-
-Les données des hôtels, clients, chambres, prestations et réservations sont fournies dans le sujet de projet :
-Projet BD 2025 - JZ.pdf
-
-## 👨‍💻 Auteurs
-
-ALOUAH Abdelkrim 
-
-MOUKOUCH Adam
-
-Licence IAP S4, 2025
+Auteur
+Projet réalisé dans le cadre du cours de Bases de Données
+Pr. J.ZAHIR - Licence MIP - IAP S4 2025
