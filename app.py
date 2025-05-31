@@ -154,14 +154,14 @@ elif menu == "➕ Ajouter Client":
         col1, col2 = st.columns(2)
         
         with col1:
-            nom = st.text_input("Nom complet *", placeholder="Ex: Jean Dupont")
-            email = st.text_input("Email *", placeholder="Ex: jean.dupont@email.com")
-            telephone = st.text_input("Téléphone", placeholder="Ex: 0612345678")
+            nom = st.text_input("Nom complet *", placeholder="Nom et Prénom")
+            email = st.text_input("Email *", placeholder="example@email.com")
+            telephone = st.text_input("Téléphone", placeholder="+212*********")
         
         with col2:
-            adresse = st.text_input("Adresse", placeholder="Ex: 12 Rue de Paris")
-            ville = st.text_input("Ville", placeholder="Ex: Paris")
-            code_postal = st.text_input("Code Postal", placeholder="Ex: 75001")
+            adresse = st.text_input("Adresse")
+            ville = st.text_input("Ville")
+            code_postal = st.text_input("Code Postal")
         
         submitted = st.form_submit_button("Ajouter le Client", type="primary")
         
@@ -227,7 +227,7 @@ elif menu == "📅 Nouvelle Réservation":
 st.markdown("---")
 st.markdown(
     "<div style='text-align: center; color: #888;'>"
-    "Projet Bases de Données - Licence MIP IAP S4 2025 - Pr. J.ZAHIR"
+    "Projet Bases de Données - Licence IAP S4 2025 - Pr. J.ZAHIR"
     "</div>", 
     unsafe_allow_html=True
 )
